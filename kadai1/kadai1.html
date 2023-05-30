@@ -13,8 +13,8 @@
 
     function init() {
       // サイズを指定
-      const width = 800
-      const height = 600;
+      const width = 1280;
+      const height = 1024;
 
       // レンダラーを作成
       var renderer = new THREE.WebGLRenderer();
@@ -45,7 +45,7 @@
       // シーンに追加
       //scene.add(directionalLight2);
 
-      var pointlight1=new THREE.PointLight( 0xffffff, 2, 50, 1.0);
+      var pointlight1 = new THREE.PointLight(0xffffff, 2, 50, 1.0);
       pointlight1.position.set(0, 1, 10);
       scene.add(pointlight1);
 
@@ -62,23 +62,46 @@
       //球
       var sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
       //半径、垂直方向の分割数、水平方向の分割数
-      var sphereMaterial = new THREE.MeshStandardMaterial({ color: 0x6600ff, roughness: 0.25, matalness: 0.85 });
+      var sphereMaterial = new THREE.MeshStandardMaterial({ color: 0x6600ff, roughness: 0.30, matalness: 0.85 });
       var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
       sphere.position.set(0, 1, 0);
       scene.add(sphere);
 
+      //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      var torusGeometry = new THREE.TorusGeometry(0.5, 0.2, 6, 12);
+      //半径、ドーナッツの太さ、ドーナッツのチューブ方向の分割数、水平方向の分割数
+      var torusMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+      var torus = new THREE.Mesh(torusGeometry, torusMaterial);
+      torus.position.set(0, 0, -5);
+      scene.add(torus);
+
+      //グループ
+      const all = new THREE.Group()
+      all.add(sphere);
+      all.add(torus);
+      //原点を設定
+      all.position.set(0, 0, 0);
+      scene.add(all);
+
+
       update();
-      box.rotation.x += 0.5;
-      box.rotation.y += 0.5;
 
       // 毎フレーム時に実行されるループイベントです
       function update() {
         // レンダリング
         renderer.render(scene, camera);
         requestAnimationFrame(update);
-        // 箱を回転させる
-        //box.rotation.x += 0.01;
-        //box.rotation.y += 0.01;
+        // 回転
+        sphere.rotation.x += 0.01;
+        sphere.rotation.y += 0.01;
+
+        torus.rotation.x += 0.02;
+        torus.rotation.y += 0.02;
+
+        all.rotation.x += 0.05;
+        all.rotation.y += 0.01;
+        all.rotation.z += 0.01;
+
       }
     }
   </script>
