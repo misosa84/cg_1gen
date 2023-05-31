@@ -16,9 +16,13 @@
       const width = 1280;
       const height = 1024;
 
+      //変数
+      let k = THREE.Math.degToRad(0.222)//45度
+
       // レンダラーを作成
       var renderer = new THREE.WebGLRenderer();
       document.body.appendChild(renderer.domElement);
+      renderer.shadowMap.enabled = true;
       renderer.setSize(width, height);
 
       // シーンを作成
@@ -28,61 +32,87 @@
       // カメラを作成
       const camera = new THREE.PerspectiveCamera(45, width / height);
       // カメラの初期座標を設定
-      camera.position.set(1, 2, 5); //位置を指定
+      camera.position.set(25, 10, 10); //位置を指定
       camera.lookAt(0, 0, 0); //見つめる方向
 
       //カメラコントローラーを作成
       const controls = new THREE.OrbitControls(camera, document.body);
 
-      // 平行光源1
-      //var directionalLight1 = new THREE.DirectionalLight(0xffffff);
-      //directionalLight1.position.set(10, 10, 10);
-      // シーンに追加
-      //scene.add(directionalLight1);
-      // 平行光源2
-      //var directionalLight2 = new THREE.DirectionalLight(0x888888);
-      //directionalLight2.position.set(-10, -10, 10);
-      // シーンに追加
-      //scene.add(directionalLight2);
+      // 環境光源を作成
+      // new THREE.AmbientLight(色, 光の強さ)
+      const ambientlight = new THREE.AmbientLight(0xFFFFFF, 0.8);
+      scene.add(ambientlight);
 
-      var pointlight1 = new THREE.PointLight(0xffffff, 2, 50, 1.0);
-      pointlight1.position.set(0, 1, 10);
+      //点光源
+      var pointlight1 = new THREE.PointLight(0xffffff, 2, 0, 1.0);
+      pointlight1.position.set(0, 0, 0);
+      pointlight1.castShadow = true;
       scene.add(pointlight1);
 
 
 
 
+
       // helper
-      const gridHelper = new THREE.GridHelper(4, 20); // size, step
-      scene.add(gridHelper);
-      const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
-      scene.add(axisHelper);
+      //const gridHelper = new THREE.GridHelper(4, 20); // size, step
+      //scene.add(gridHelper);
+      //const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
+      //scene.add(axisHelper);
 
 
-      //球
-      var sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+
+      //太陽のイメージ
+      var sunGeometry = new THREE.SphereGeometry(2, 32, 32);
       //半径、垂直方向の分割数、水平方向の分割数
-      var sphereMaterial = new THREE.MeshStandardMaterial({ color: 0x6600ff, roughness: 0.30, matalness: 0.85 });
-      var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-      sphere.position.set(0, 1, 0);
-      scene.add(sphere);
+      var sunMaterial = new THREE.MeshStandardMaterial({ color: 0xfd7d33, roughness: 0.30, matalness: 0.85 });
+      var sun = new THREE.Mesh(sunGeometry, sunMaterial);
+      sun.position.set(0, 0, 0);
+      scene.add(sun);
 
-      //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-      var torusGeometry = new THREE.TorusGeometry(0.5, 0.2, 6, 12);
-      //半径、ドーナッツの太さ、ドーナッツのチューブ方向の分割数、水平方向の分割数
-      var torusMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff });
-      var torus = new THREE.Mesh(torusGeometry, torusMaterial);
-      torus.position.set(0, 0, -5);
-      scene.add(torus);
+      //地球
+      var earthGeometry = new THREE.SphereGeometry(0.8, 32, 32);
+      //半径、垂直方向の分割数、水平方向の分割数
+      var earthMaterial = new THREE.MeshStandardMaterial({ color: 0x0066cc, roughness: 0.30, matalness: 0.85 });
+      var earth = new THREE.Mesh(earthGeometry, earthMaterial);
+      earth.position.set(7, 0, 0);
+      scene.add(earth);
 
-      //グループ
-      const all = new THREE.Group()
-      all.add(sphere);
-      all.add(torus);
-      //原点を設定
-      all.position.set(0, 0, 0);
-      scene.add(all);
+      //月
+      var moonGeometry = new THREE.SphereGeometry(0.25, 32, 32);
+      //半径、垂直方向の分割数、水平方向の分割数
+      var moonMaterial = new THREE.MeshStandardMaterial({ color: 0xffff00, roughness: 0.30, matalness: 0.85 });
+      var moon = new THREE.Mesh(moonGeometry, moonMaterial);
+      moon.position.set(10, 0, 0);
+      scene.add(moon);
 
+      //土星
+      //var saturnGeometry = new THREE.SphereGeometry(1.2, 32, 32);
+      //var saturnMaterial = new THREE.MeshStandardMaterial({ color: 0xb47142, roughness: 0.30, matalness: 0.85 });
+      //var saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
+      //saturn.position.set(15, 0, 0);
+      //scene.add(saturn);
+
+      //土星の環
+      //var s_ringsGeometry = new THREE.TorusGeometry(0.5, 0.2, 6, 12);
+      //var s_ringsMaterial = new THREE.MeshStandardMaterial({ color: 0xffff00, roughness: 0.30, matalness: 0.85 });
+      //var s_rings = new THREE.Mesh(s_ringsGeometry, s_ringsMaterial);
+      //scene.add(s_rings);
+
+
+
+      //ssグループ
+      const allss = new THREE.Group();
+      allss.add(sun);
+      allss.add(earth);
+      allss.position.set(0, 0, 0);
+      scene.add(allss);
+
+      //saturnグループ
+      //const allsaturn = new THREE.Group();
+      //allsaturn.add(saturn);
+      //allsaturn.add(s_rings);
+      //allss.position.set(0, 0, 0);
+      //scene.add(allsaturn);
 
       update();
 
@@ -91,16 +121,21 @@
         // レンダリング
         renderer.render(scene, camera);
         requestAnimationFrame(update);
-        // 回転
-        sphere.rotation.x += 0.01;
-        sphere.rotation.y += 0.01;
+        //月の回転
+        k += 0.01;
+        const es = earth.getWorldPosition(new THREE.Vector3());
+        moon.position.set(es.x + Math.cos(k) * 2, 0, es.z + Math.sin(k) * 2);
 
-        torus.rotation.x += 0.02;
-        torus.rotation.y += 0.02;
+        //
+        //const sr = saturn.getWorldPosition(new THREE.Vector3());
+        //s_rings.position.set(er.x, er.y, er.z);
 
-        all.rotation.x += 0.05;
-        all.rotation.y += 0.01;
-        all.rotation.z += 0.01;
+        //回転
+        moon.rotation.y += 0.01;
+        earth.rotation.y += 0.01;
+        sun.rotation.y += 0.01;
+        allss.rotation.y += 0.001;
+
 
       }
     }
