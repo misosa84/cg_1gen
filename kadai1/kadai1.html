@@ -86,17 +86,20 @@
       scene.add(moon);
 
       //土星
-      //var saturnGeometry = new THREE.SphereGeometry(1.2, 32, 32);
-      //var saturnMaterial = new THREE.MeshStandardMaterial({ color: 0xb47142, roughness: 0.30, matalness: 0.85 });
-      //var saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
-      //saturn.position.set(15, 0, 0);
-      //scene.add(saturn);
+      var saturnGeometry = new THREE.SphereGeometry(1.2, 32, 32);
+      var saturnMaterial = new THREE.MeshStandardMaterial({ color: 0xb47142, roughness: 0.30, matalness: 0.85 });
+      var saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
+      saturn.position.set(15, 0, 0);
+      scene.add(saturn);
+
 
       //土星の環
-      //var s_ringsGeometry = new THREE.TorusGeometry(0.5, 0.2, 6, 12);
-      //var s_ringsMaterial = new THREE.MeshStandardMaterial({ color: 0xffff00, roughness: 0.30, matalness: 0.85 });
-      //var s_rings = new THREE.Mesh(s_ringsGeometry, s_ringsMaterial);
-      //scene.add(s_rings);
+      var s_ringsGeometry = new THREE.TorusGeometry(2, 0.5, 2, 12);
+      var s_ringsMaterial = new THREE.MeshStandardMaterial({ color: 0xffd700, roughness: 0.30, matalness: 0.85 });
+      var s_rings = new THREE.Mesh(s_ringsGeometry, s_ringsMaterial);
+      s_rings.rotation.x = 2;
+      s_rings.position.set(15, 0, 0);
+      scene.add(s_rings);
 
 
 
@@ -108,11 +111,11 @@
       scene.add(allss);
 
       //saturnグループ
-      //const allsaturn = new THREE.Group();
-      //allsaturn.add(saturn);
-      //allsaturn.add(s_rings);
-      //allss.position.set(0, 0, 0);
-      //scene.add(allsaturn);
+      const allsaturn = new THREE.Group();
+      allsaturn.add(saturn);
+      allsaturn.add(s_rings);
+      allsaturn.position.set(0, 0, 0);
+      scene.add(allsaturn);
 
       update();
 
@@ -126,15 +129,13 @@
         const es = earth.getWorldPosition(new THREE.Vector3());
         moon.position.set(es.x + Math.cos(k) * 2, 0, es.z + Math.sin(k) * 2);
 
-        //
-        //const sr = saturn.getWorldPosition(new THREE.Vector3());
-        //s_rings.position.set(er.x, er.y, er.z);
 
         //回転
         moon.rotation.y += 0.01;
         earth.rotation.y += 0.01;
         sun.rotation.y += 0.01;
         allss.rotation.y += 0.001;
+        allsaturn.rotation.y += 0.005;
 
 
       }
