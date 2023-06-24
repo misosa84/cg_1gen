@@ -69,17 +69,28 @@
       box.position.z = -5;
       scene.add(box);
 
-      // テクスチャー読み込み
+      // 地面を作成
       var textureLoader2 = new THREE.TextureLoader();
       var texture2 = textureLoader2.load("img/plaid.png");
-      var mat2 = new THREE.MeshPhongMaterial({side: THREE.DoubleSide});
+      var mat2 = new THREE.MeshPhongMaterial({ side: THREE.DoubleSide });
       mat2.map = texture2;
-      // 地面を作成
-      var geometry = new THREE.PlaneGeometry(20, 20);
-      var plane = new THREE.Mesh(geometry, mat2);
+
+      var geometry2 = new THREE.PlaneGeometry(20, 20);
+      var plane = new THREE.Mesh(geometry2, mat2);
       plane.position.z = 0;
       plane.rotation.x = Math.PI / 2;
       scene.add(plane);
+
+      //ラッパー
+      var textureLoader = new THREE.TextureLoader();
+      var texture3 = textureLoader.load("img/rapper.png");
+      const mat3 = new THREE.SpriteMaterial({ map: texture, });
+      mat3.map = texture3;
+
+      const rapper = new THREE.Sprite(mat3);
+      rapper.scale.set(1, 2, 1);
+      rapper.position.set(0, 1.525, -4); //位置を指定
+      scene.add(rapper);
 
 
 
