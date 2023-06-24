@@ -1,0 +1,101 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <script src="https://unpkg.com/three@0.137.4/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
+</head>
+
+<body>
+  <h1>課題2</h1>
+  aaaaaaaaa<br>
+  bbbbbbbbbbbbbbbbb
+  <script>
+    // ページの読み込みを待つ
+    window.addEventListener('DOMContentLoaded', init);
+
+    function init() {
+      // サイズを指定
+      const width = 1280;
+      const height = 1024;
+
+      // レンダラーを作成
+      var renderer = new THREE.WebGLRenderer();
+      document.body.appendChild(renderer.domElement);
+      renderer.setSize(width, height);
+      // 背景の色を設定
+      renderer.setClearColor(0xfff0f5);
+
+
+      // シーンを作成
+      const scene = new THREE.Scene();
+
+      // カメラを作成
+      const camera = new THREE.PerspectiveCamera(45, width / height);
+      // カメラの初期座標を設定
+      camera.position.set(0, 3.25, 10);
+
+      // カメラコントローラーを作成
+      const controls = new THREE.OrbitControls(camera, document.body);
+
+      // 平行光源1
+      var directionalLight1 = new THREE.DirectionalLight(0xffffff);
+      directionalLight1.position.set(10, 10, 10);
+      // シーンに追加
+      scene.add(directionalLight1);
+      // 平行光源2
+      var directionalLight2 = new THREE.DirectionalLight(0x888888);
+      directionalLight2.position.set(-10, -10, 10);
+      // シーンに追加
+      scene.add(directionalLight2);
+
+      // helper
+      const gridHelper = new THREE.GridHelper(2, 10); // size, step
+      scene.add(gridHelper);
+      const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
+      scene.add(axisHelper);
+
+      // ステージの作成
+
+      var materials = [
+        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
+        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
+        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
+        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
+        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
+        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
+      ];
+
+      var material = new THREE.MeshFaceMaterial(materials); // マテリアルをセット
+
+      var geometry = new THREE.BoxGeometry(10, 0.6, 7.5);
+      var box = new THREE.Mesh(geometry, material);
+      box.position.y = +0.3;
+      box.position.z = -5;
+      scene.add(box);
+
+      // 地面を作成
+      var geometry = new THREE.PlaneGeometry(20, 20);
+      var material = new THREE.MeshPhongMaterial({ color: 0xa9a9a9, side: THREE.DoubleSide });
+      var plane = new THREE.Mesh(geometry, material);
+      plane.position.z = 0;
+      plane.rotation.x = Math.PI / 2;
+      scene.add(plane);
+
+      // 木をスプライトで作成
+      //var textureLoader = new THREE.TextureLoader();
+      //var texture = textureLoader.load("img/tree0.png");
+      //const material = new THREE.SpriteMaterial({ map: texture, });
+
+
+      update();
+
+      // 毎フレーム時に実行されるループイベントです
+      function update() {
+        // レンダリング
+        renderer.render(scene, camera);
+        requestAnimationFrame(update);
+      }
+    }
+  </script>
+</body>
