@@ -57,30 +57,25 @@
 
       // ステージの作成
 
-      var materials = [
-        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
-        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
-        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
-        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
-        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
-        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture("stone.png") }),
-      ];
-
-      var material = new THREE.MeshFaceMaterial(materials); // マテリアルをセット
+      // テクスチャー読み込み
+      var textureLoader = new THREE.TextureLoader();
+      var texture = textureLoader.load("img/stone.png");
+      var mat = new THREE.MeshPhongMaterial();
+      mat.map = texture;
 
       var geometry = new THREE.BoxGeometry(10, 0.6, 7.5);
-      var box = new THREE.Mesh(geometry, material);
+      var box = new THREE.Mesh(geometry, mat);
       box.position.y = +0.3;
       box.position.z = -5;
       scene.add(box);
 
       // 地面を作成
-      var geometry = new THREE.PlaneGeometry(20, 20);
-      var material = new THREE.MeshPhongMaterial({ color: 0xa9a9a9, side: THREE.DoubleSide });
-      var plane = new THREE.Mesh(geometry, material);
-      plane.position.z = 0;
-      plane.rotation.x = Math.PI / 2;
-      scene.add(plane);
+      //var geometry = new THREE.PlaneGeometry(20, 20);
+      //var material = new THREE.MeshPhongMaterial({ color: 0xa9a9a9, side: THREE.DoubleSide });
+      //var plane = new THREE.Mesh(geometry, material);
+      //plane.position.z = 0;
+      //plane.rotation.x = Math.PI / 2;
+      //scene.add(plane);
 
       // 木をスプライトで作成
       //var textureLoader = new THREE.TextureLoader();
