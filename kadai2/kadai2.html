@@ -69,18 +69,18 @@
       box.position.z = -5;
       scene.add(box);
 
+      // テクスチャー読み込み
+      var textureLoader2 = new THREE.TextureLoader();
+      var texture2 = textureLoader2.load("img/plaid.png");
+      var mat2 = new THREE.MeshPhongMaterial({side: THREE.DoubleSide});
+      mat2.map = texture2;
       // 地面を作成
-      //var geometry = new THREE.PlaneGeometry(20, 20);
-      //var material = new THREE.MeshPhongMaterial({ color: 0xa9a9a9, side: THREE.DoubleSide });
-      //var plane = new THREE.Mesh(geometry, material);
-      //plane.position.z = 0;
-      //plane.rotation.x = Math.PI / 2;
-      //scene.add(plane);
+      var geometry = new THREE.PlaneGeometry(20, 20);
+      var plane = new THREE.Mesh(geometry, mat2);
+      plane.position.z = 0;
+      plane.rotation.x = Math.PI / 2;
+      scene.add(plane);
 
-      // 木をスプライトで作成
-      //var textureLoader = new THREE.TextureLoader();
-      //var texture = textureLoader.load("img/tree0.png");
-      //const material = new THREE.SpriteMaterial({ map: texture, });
 
 
       update();
