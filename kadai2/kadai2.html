@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <script src="https://unpkg.com/three@0.137.4/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.126.1/examples/jsm/loaders/FBXLoader.js"></script>
   <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
 </head>
 
@@ -33,7 +34,7 @@
       // カメラを作成
       const camera = new THREE.PerspectiveCamera(45, width / height);
       // カメラの初期座標を設定
-      camera.position.set(0, 3.25, 10);
+      camera.position.set(0, 3.25, 14);
 
       // カメラコントローラーを作成
       const controls = new THREE.OrbitControls(camera, document.body);
@@ -56,13 +57,10 @@
       scene.add(axisHelper);
 
       // ステージの作成
-
-      // テクスチャー読み込み
       var textureLoader = new THREE.TextureLoader();
       var texture = textureLoader.load("img/stone.png");
       var mat = new THREE.MeshPhongMaterial();
       mat.map = texture;
-
       var geometry = new THREE.BoxGeometry(10, 0.6, 7.5);
       var box = new THREE.Mesh(geometry, mat);
       box.position.y = +0.3;
@@ -74,12 +72,53 @@
       var texture2 = textureLoader2.load("img/plaid.png");
       var mat2 = new THREE.MeshPhongMaterial({ side: THREE.DoubleSide });
       mat2.map = texture2;
-
-      var geometry2 = new THREE.PlaneGeometry(20, 20);
+      var geometry2 = new THREE.PlaneGeometry(40, 20);
       var plane = new THREE.Mesh(geometry2, mat2);
       plane.position.z = 0;
       plane.rotation.x = Math.PI / 2;
       scene.add(plane);
+
+      // 壁を作成
+      var geometry = new THREE.PlaneGeometry(20, 4);
+      var material = new THREE.MeshPhongMaterial({ color: 0x000000, side: THREE.DoubleSide });
+      var plane2 = new THREE.Mesh(geometry, material);
+      plane2.position.x = -10;
+      plane2.position.y = 2;
+      plane2.rotation.y = Math.PI / 2;
+      scene.add(plane2);
+
+      // 壁を作成
+      var geometry = new THREE.PlaneGeometry(20, 4);
+      var material = new THREE.MeshPhongMaterial({ color: 0x000000, side: THREE.DoubleSide });
+      var plane3 = new THREE.Mesh(geometry, material);
+      plane3.position.x = 10;
+      plane3.position.y = 2;
+      plane3.rotation.y = Math.PI / 2;
+      scene.add(plane3);
+
+      // 壁を作成
+      var geometry = new THREE.PlaneGeometry(20, 4);
+      var material = new THREE.MeshPhongMaterial({ color: 0x000000, side: THREE.DoubleSide });
+      var plane4 = new THREE.Mesh(geometry, material);
+      plane4.position.y = 2;
+      plane4.position.z = -10;
+      scene.add(plane4);
+
+      // 天井を作成
+      var geometry = new THREE.PlaneGeometry(20, 20);
+      var material = new THREE.MeshPhongMaterial({ color: 0x000000, side: THREE.DoubleSide });
+      var plane4 = new THREE.Mesh(geometry, material);
+      plane4.position.y = 4.1;
+      plane4.rotation.x = Math.PI / 2;
+      scene.add(plane4);
+
+      // スクリーンを作成
+      var geometry = new THREE.PlaneGeometry(14, 3);
+      var material = new THREE.MeshPhongMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+      var plane5 = new THREE.Mesh(geometry, material);
+      plane5.position.y = 2;
+      plane5.position.z = -9.9;
+      scene.add(plane5);
 
       //ラッパー
       var textureLoader = new THREE.TextureLoader();
@@ -92,16 +131,21 @@
       rapper.position.set(0, 1.525, -4); //位置を指定
       scene.add(rapper);
 
-
+      //fbxファイルの読み込み
+      const loader = new FBXLoader();
+      loader.load('img/mirrorBall.fbx', function (object) {
+        object.scale.set(1, 1, 1)
+        scene.add( object );
+      })
 
       update();
 
-      // 毎フレーム時に実行されるループイベントです
-      function update() {
-        // レンダリング
-        renderer.render(scene, camera);
-        requestAnimationFrame(update);
+        // 毎フレーム時に実行されるループイベントです
+        function update() {
+          // レンダリング
+          renderer.render(scene, camera);
+          requestAnimationFrame(update);
+        }
       }
-    }
   </script>
 </body>
