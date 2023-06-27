@@ -63,15 +63,15 @@
       // スポットライト
       //SpotLight( color : Integer, intensity : Float, distance : Float, angle : Radians, penumbra : Float, decay : Float )
       var sLight = new THREE.SpotLight(0xFFC0CB, 10, 100, 0.1, 0.8, 1);
-      sLight.position.set(0, 3, 0);
+      sLight.position.set(0, 3.5, 0);
       sLight.target.position.set(0, 1.525, -3);
       sLight.target.updateMatrixWorld();
-      //sLight.castShadow = ture;
       scene.add(sLight);
 
-      // // ヘルパーを作成
-      // const lightHelper = new THREE.SpotLightHelper(sLight);
-      // scene.add(lightHelper);
+      // // // ヘルパーを作成
+      //  const lightHelper = new THREE.SpotLightHelper(sLight);
+      //  scene.add(lightHelper);
+
 
       // // helper
       // const gridHelper = new THREE.GridHelper(2, 10); // size, step
