@@ -3,8 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <script src="https://unpkg.com/three@0.137.4/build/three.min.js"></script>
-  <script src="https://unpkg.com/three@0.126.1/examples/jsm/loaders/FBXLoader.js"></script>
   <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://unpkg.com/three@0.137.4/examples/js/loaders/GLTFLoader.js"></script>
+
+
+  <!-- <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.137.4/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.137.4/examples/jsm/"
+      }
+    }
+  </script> -->
 </head>
 
 <body>
@@ -12,6 +22,9 @@
   aaaaaaaaa<br>
   bbbbbbbbbbbbbbbbb
   <script>
+    // import * as THREE from "three";
+    // import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+    // import { OrbitControls } from "three/addons/controls/OrbitControls.js";
     // ページの読み込みを待つ
     window.addEventListener('DOMContentLoaded', init);
 
@@ -39,16 +52,31 @@
       // カメラコントローラーを作成
       const controls = new THREE.OrbitControls(camera, document.body);
 
-      // 平行光源1
-      var directionalLight1 = new THREE.DirectionalLight(0xffffff);
-      directionalLight1.position.set(10, 10, 10);
-      // シーンに追加
-      scene.add(directionalLight1);
-      // 平行光源2
-      var directionalLight2 = new THREE.DirectionalLight(0x888888);
-      directionalLight2.position.set(-10, -10, 10);
-      // シーンに追加
-      scene.add(directionalLight2);
+      // // 平行光源1
+      // var directionalLight1 = new THREE.DirectionalLight(0xffffff);
+      // directionalLight1.position.set(10, 10, 10);
+      // // シーンに追加
+      // scene.add(directionalLight1);
+
+      // // 平行光源2
+      // var directionalLight2 = new THREE.DirectionalLight(0x888888);
+      // directionalLight2.position.set(-10, -10, 10);
+      // // シーンに追加
+      // scene.add(directionalLight2);
+
+      // スポットライト
+      //SpotLight( color : Integer, intensity : Float, distance : Float, angle : Radians, penumbra : Float, decay : Float )
+      var sLight = new THREE.SpotLight(0xFFFFFF, 10, 100, 0.2, 0.8, 1);
+      sLight.position.set(0, 2, 0);
+      sLight.rotation.set(0, 0 , 0);
+      sLight.target.position.set(0,3,0);
+      sLight.target.updateMatrixWorld();
+      //sLight.castShadow = ture;
+      scene.add(sLight);
+
+      // ヘルパーを作成
+      const lightHelper = new THREE.SpotLightHelper(sLight);
+      scene.add(lightHelper);
 
       // helper
       const gridHelper = new THREE.GridHelper(2, 10); // size, step
@@ -108,7 +136,7 @@
       var geometry = new THREE.PlaneGeometry(20, 20);
       var material = new THREE.MeshPhongMaterial({ color: 0x000000, side: THREE.DoubleSide });
       var plane4 = new THREE.Mesh(geometry, material);
-      plane4.position.y = 4.1;
+      plane4.position.y = 20;//4;
       plane4.rotation.x = Math.PI / 2;
       scene.add(plane4);
 
@@ -131,21 +159,33 @@
       rapper.position.set(0, 1.525, -4); //位置を指定
       scene.add(rapper);
 
-      //fbxファイルの読み込み
-      const loader = new FBXLoader();
-      loader.load('img/mirrorBall.fbx', function (object) {
-        object.scale.set(1, 1, 1)
-        scene.add( object );
-      })
+      //ミラーボール
+      const loader = new THREE.GLTFLoader();
+      const texture4 = loader.load("img/mirrorball.glb", function (gltf) {
+        const model = gltf.scene;
+        model.traverse((obj) => {
+          if (obj.type === 'Mesh') {
+            obj.material = new THREE.MeshPhongMaterial({ color: 0xffffff});
+            obj.position.set(0, 3.5, 0);
+            obj.scale.set(0.35, 0.35, 0.35);
+          }
+        });
+
+        scene.add(model);
+      });
+
+
+
 
       update();
 
-        // 毎フレーム時に実行されるループイベントです
-        function update() {
-          // レンダリング
-          renderer.render(scene, camera);
-          requestAnimationFrame(update);
-        }
+      // 毎フレーム時に実行されるループイベントです
+      function update() {
+        // レンダリング
+        renderer.render(scene, camera);
+        requestAnimationFrame(update);
+        lightHelper.update();
       }
+    }
   </script>
 </body>
