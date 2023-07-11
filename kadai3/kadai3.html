@@ -1,0 +1,93 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <script src="https://unpkg.com/three@0.137.4/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://unpkg.com/three@0.137.4/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+
+<body>
+  <h1>課題3</h1>
+  <P>作品名</P>
+  説明<br>
+  <script>
+    window.addEventListener('DOMContentLoaded', init);
+
+    function init() {
+      // サイズを指定
+      const width = 1280;
+      const height = 1024;
+
+      var i=0;
+
+
+      // レンダラーを作成
+      var renderer = new THREE.WebGLRenderer();
+      document.body.appendChild(renderer.domElement);
+      renderer.setSize(width, height);
+      // 背景の色を設定
+      renderer.setClearColor(0x000000);
+
+
+      // シーンを作成
+      const scene = new THREE.Scene();
+
+      // カメラを作成
+      const camera = new THREE.PerspectiveCamera(45, width / height);
+      // カメラの初期座標を設定
+      camera.position.set(0, 2, 8);
+
+
+      // カメラコントローラーを作成
+      const controls = new THREE.OrbitControls(camera, document.body);
+
+      // 環境光源
+      var light0 = new THREE.AmbientLight(10);
+      scene.add(light0);
+
+      //点光源
+      var pointlight1 = new THREE.PointLight(0xffffff, 2, 7, 1);
+      pointlight1.position.set(0, 5, 0);
+      pointlight1.castShadow = true;
+      scene.add(pointlight1);
+
+      // helper
+      const gridHelper = new THREE.GridHelper(4, 20); // size, step
+      scene.add(gridHelper);
+      const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
+      scene.add(axisHelper);
+
+
+      const loader = new THREE.GLTFLoader();
+      const texture = loader.load("img/car.glb", function (gltf) {
+        const model = gltf.scene;
+        model.traverse((obj) => {
+          if (obj.type === 'Mesh') {
+            obj.position.set(0, 0, 0);
+            obj.scale.set(1, 1, 1);
+            obj.castShadow = true;
+          }
+        });
+
+        scene.add(model);
+      });
+
+
+
+
+      update();
+
+      // 毎フレーム時に実行されるループイベントです
+      function update() {
+        renderer.render(scene, camera);
+        requestAnimationFrame(update);
+        pointlight1.position.set(0, i, 0);
+        if(i<=-10){
+          i=10;
+        }
+        i-=0.1;
+      }
+    }
+  </script>
+</body>
